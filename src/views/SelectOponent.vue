@@ -72,7 +72,7 @@ const checkForInvites = (req) => {
                 text: 'Do you want to join ?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#2a8c00',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes'
             }).then(async (result) => {
@@ -131,7 +131,7 @@ const startGame = (user) => {
         text: 'Do you want to invite ' + user + ' ?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#2a8c00',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes'
     }).then(async (result) => {

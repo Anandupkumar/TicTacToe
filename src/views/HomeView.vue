@@ -5,6 +5,7 @@ import { computed, ref, onMounted, onBeforeUnmount, getCurrentInstance } from "v
 
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/database'
+import Swal from "sweetalert2";
 
 const instance = getCurrentInstance();
 
@@ -22,6 +23,7 @@ const teamName = ref("")
 
 const isBoardFull = computed(() => Array.isArray(board.value) && board.value.every((cell) => cell !== ''));
 
+const inviteRequestsRef = firebase.database().ref('invite_requests');
 const teamRef = firebase.database().ref('teams');
 var gameRef = null
 
@@ -137,6 +139,36 @@ const updateGameState = () => {
   });
 };
 
+const goBack = () => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'Do you want to select another oponent ?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#2a8c00',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes'
+  }).then(async (result) => {
+
+    if (result.isConfirmed) {
+
+      inviteRequestsRef.update({
+        [nameArr.value[0]] :{
+          is_accepted: 3,
+          from: currUser.value,
+        }
+      })
+
+      // Remove the object
+      teamRef.child(teamName.value).remove()
+      localStorage.removeItem('teamName')
+
+      instance.proxy.$router.push('/');
+    }
+
+  })
+}
+
 </script>
 
 <template>
@@ -152,6 +184,8 @@ const updateGameState = () => {
     </div>
 
     <button v-if="winner" @click="resetGame">Restart Game</button>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button style="background-color: #454545; color: white;" @click="goBack">Select Another Oppenent</button>
   </main>
 </template>
 
@@ -160,7 +194,7 @@ const updateGameState = () => {
   display: grid;
   grid-template-columns: repeat(3, 110px);
   grid-gap: 5px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 
 .board div {
@@ -183,4 +217,5 @@ button {
   font-size: 1em;
   cursor: pointer;
 }
+
 </style>
