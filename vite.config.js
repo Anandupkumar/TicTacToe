@@ -13,7 +13,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  server: {
-    host: '192.168.1.48', // Replace with your local IP address
-  },
+  // server: {
+  //   host: '192.168.1.48', // Replace with your local IP address
+  // },
 })
